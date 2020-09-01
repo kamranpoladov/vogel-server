@@ -2,11 +2,12 @@ import express = require("express");
 import fs = require("fs");
 import Picture from "../models/picture";
 import upload from "../utils/uploadPicture";
+import restict from "../middleware/restrict";
 
 const router = express.Router();
 
 // Get a random picture to display
-router.get("/", async (req, res) => {
+router.get("/", restict, async (req, res) => {
   try {
     await Picture.countDocuments().exec(async (error, count) => {
       if (error) {

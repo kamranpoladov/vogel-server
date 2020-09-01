@@ -13,6 +13,21 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use((request, response, next) => {
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+
+  if (request.method === "OPTIONS") {
+    response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    return response.status(200).json();
+  }
+
+  next();
+});
+
 app.use("/reasons", reasonsRouter);
 app.use("/pictures", picturesRouter);
 
