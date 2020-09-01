@@ -4,46 +4,38 @@ import restict from "../middleware/restrict";
 
 const router = express.Router();
 
-router.get("/", restict, async (req, res) => {
-  if (res.locals.restrict) {
-    res.send({
-      reason: {
-        text: "for sample reason",
-      },
-    });
-  } else {
-    try {
-      await Reason.countDocuments({ didAppear: false }).exec(
-        async (error, count) => {
-          if (error) {
-            res.status(500).send({ error });
-          } else if (count === 0) {
-            res.status(204).send();
-          } else {
-            const random = Math.floor(Math.random() * count);
-            await Reason.findOne({ didAppear: false })
-              .skip(random)
-              .exec(async (err, reason) => {
-                if (err) {
-                  res.status(500).send({ error });
-                } else if (!reason) {
-                  res.status(400).send();
-                } else {
-                  reason.didAppear = true;
-                  await reason.save();
-                  res.send({ reason });
-                }
-              });
-          }
+router.get("/", async (req, res) => {
+  try {
+    await Reason.countDocuments({ didAppear: false }).exec(
+      async (error, count) => {
+        if (error) {
+          res.status(500).send({ error });
+        } else if (count === 0) {
+          res.status(204).send();
+        } else {
+          const random = Math.floor(Math.random() * count);
+          await Reason.findOne({ didAppear: false })
+            .skip(random)
+            .exec(async (err, reason) => {
+              if (err) {
+                res.status(500).send({ error });
+              } else if (!reason) {
+                res.status(400).send();
+              } else {
+                reason.didAppear = true;
+                await reason.save();
+                res.send({ reason });
+              }
+            });
         }
-      );
-    } catch (error) {
-      res.status(500).send({ error });
-    }
+      }
+    );
+  } catch (error) {
+    res.status(500).send({ error });
   }
 });
 
-router.put("/", restict, async (req, res) => {
+router.put("/", async (req, res) => {
   try {
     const update = await Reason.updateMany(
       { didAppear: true },
