@@ -2,7 +2,7 @@ import express = require("express");
 import fs = require("fs");
 import { Picture } from "../models";
 import upload from "../utils/uploadPicture";
-import restict from "../middleware/restrict";
+import path = require("path");
 
 const router = express.Router();
 
@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
   if (res.locals.restrict) {
     // If user does not have sufficient rights
     // send a picture with fluffy clouds
-    const picture = await Picture.findById("5f4f3a2f76f3703d8c988d1c");
+    const picture = new Picture();
+    const pathToDefault = path.join(__dirname, "../../public/default.jpg");
+    picture.img.data = fs.readFileSync(pathToDefault);
     res.send({ picture });
   } else {
     try {

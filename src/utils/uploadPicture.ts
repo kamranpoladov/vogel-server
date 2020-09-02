@@ -2,7 +2,7 @@ import multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    cb(null, "uploads/");
+    cb(null, "public/");
   },
 });
 const upload = multer({ storage });
