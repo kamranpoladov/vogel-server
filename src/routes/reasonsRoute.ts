@@ -4,6 +4,7 @@ import restict from "../middleware/restrict";
 
 const router = express.Router();
 
+// Get a random reason
 router.get("/", async (req, res) => {
   try {
     await Reason.countDocuments({ didAppear: false }).exec(
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
         if (error) {
           res.status(500).send({ error });
         } else if (count === 0) {
-          res.status(204).send();
+          res.status(205).send();
         } else {
           const random = Math.floor(Math.random() * count);
           await Reason.findOne({ didAppear: false })
@@ -20,7 +21,7 @@ router.get("/", async (req, res) => {
               if (err) {
                 res.status(500).send({ error });
               } else if (!reason) {
-                res.status(400).send();
+                res.status(400).send({ message: "Couldn't get a reason" });
               } else {
                 reason.didAppear = true;
                 await reason.save();

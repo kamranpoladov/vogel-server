@@ -5,12 +5,17 @@ interface PictureModel extends mongoose.Document {
     data: Buffer;
     contentType: string;
   };
+  didAppear: boolean;
 }
 
 const pictureSchema = new mongoose.Schema({
   img: {
     data: Buffer,
     contentType: String,
+  },
+  didAppear: {
+    type: Boolean,
+    default: false,
   },
 });
 
