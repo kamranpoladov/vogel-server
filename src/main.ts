@@ -3,8 +3,7 @@ dotenv.config();
 import "./utils/db";
 import express = require("express");
 import cors = require("cors");
-import reasonsRouter from "./routes/reasonsRoute";
-import picturesRouter from "./routes/picturesRoute";
+import router from "./routes";
 
 const app = express();
 const port = process.env.PORT || 1212;
@@ -28,8 +27,7 @@ app.use((request, response, next) => {
   next();
 });
 
-app.use("/reasons", reasonsRouter);
-app.use("/pictures", picturesRouter);
+app.use(router);
 
 app.listen(port, () => {
   console.log(`Listening on ${port}...`);

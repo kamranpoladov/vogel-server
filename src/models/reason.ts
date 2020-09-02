@@ -22,6 +22,4 @@ const reasonSchema = new mongoose.Schema({
   },
 });
 
-const Reason = mongoose.model<ReasonModel>("Reason", reasonSchema);
-
-export default Reason;
+export const Reason = mongoose.model<ReasonModel>("Reason", reasonSchema);

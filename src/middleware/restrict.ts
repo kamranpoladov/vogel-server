@@ -1,5 +1,6 @@
 import express = require("express");
 
+// Middleware to restrict access to API
 const restict = async (
   req: express.Request,
   res: express.Response,
